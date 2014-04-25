@@ -1,0 +1,43 @@
+CQL
+===============================================================================================================
+	CREATE KEYSPACE rakesh WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+	
+	USE rakesh;
+	
+	CREATE TABLE sw_worksheet_timeseries_agg 
+	(
+		worksheet_pk text,
+		parent_name text,
+		tsname text,
+		period_id int,
+		ts_metric double,
+		PRIMARY KEY ((worksheet_pk, parent_name, tsname), period_id)
+	) WITH CLUSTERING ORDER BY (period_id DESC);
+
+
+	DESCRIBE COLUMNFAMILY sw_worksheet_timeseries_agg;
+	
+	COPY sw_worksheet_timeseries_agg (worksheet_pk,parent_name,tsname,period_id,ts_metric) FROM 'D:\TestData.csv';
+	
+	SELECT * FROM sw_worksheet_timeseries_agg;
+	
+	
+	
+	CREATE TABLE comments (
+        article_id uuid,
+        posted_at timestamp,
+        author text,
+        karma int,
+        content text,
+        PRIMARY KEY (article_id, posted_at)
+    );
+	
+	INSERT INTO comments(article_id,posted_at,author,karma,content) VALUES (blobAsUuid(timeuuidAsBlob(now())),dateof(now()),'RAJESH',10,'Blah Blah Blah');
+	
+	
+	
+CLI
+===============================================================================================================	
+	USE rakesh;
+	
+	LIST sw_worksheet_timeseries_agg;
